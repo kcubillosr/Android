@@ -14,12 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText nombreProducto, descripcion, precio;
     private double longitud, latitud;
+    private TextView longituda, latituda, tvLongitud, tvLatitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
         nombreProducto = (EditText) findViewById(R.id.editText);
         descripcion = (EditText) findViewById(R.id.editText2);
         precio = (EditText) findViewById(R.id.editText3);
+        tvLongitud = (TextView) findViewById(R.id.textView2);
+        tvLatitud = (TextView) findViewById(R.id.textView5);
+        longituda = (TextView) findViewById(R.id.textView3);
+        latituda = (TextView) findViewById(R.id.textView4);
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Localizacion localizacion = new Localizacion();
@@ -58,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             longitud = location.getLongitude();
             latitud = location.getLatitude();
+
+            tvLatitud.setText(String.valueOf(latitud));
+            tvLongitud.setText(String.valueOf(longitud));
+
 
         }
 
@@ -113,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        tvLatitud.setVisibility(View.VISIBLE);
+        tvLongitud.setVisibility(View.VISIBLE);
+        longituda.setVisibility(View.VISIBLE);
+        latituda.setVisibility(View.VISIBLE);
     }
 
 
