@@ -6,22 +6,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private EditText nombreProducto, descripcion, precio;
     private double longitud, latitud;
-    private TextView longituda, latituda, tvLongitud, tvLatitud;
+    private ImageView imagen;
+    private Button btnCaptura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +38,16 @@ public class MainActivity extends AppCompatActivity {
         nombreProducto = (EditText) findViewById(R.id.editText);
         descripcion = (EditText) findViewById(R.id.editText2);
         precio = (EditText) findViewById(R.id.editText3);
-        tvLongitud = (TextView) findViewById(R.id.textView2);
-        tvLatitud = (TextView) findViewById(R.id.textView5);
-        longituda = (TextView) findViewById(R.id.textView3);
-        latituda = (TextView) findViewById(R.id.textView4);
+        imagen = (ImageView) findViewById(R.id.imageView);
+        btnCaptura = (Button) findViewById(R.id.btnCaptura);
+
+        btnCaptura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LLamarIntent();
+            }
+        });
+
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Localizacion localizacion = new Localizacion();
@@ -47,6 +60,34 @@ public class MainActivity extends AppCompatActivity {
         }
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) localizacion);
+    }
+
+    public void LLamarIntent()
+    {
+        //Nos lleva a un intent para tomar la fotografia
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if(takePictureIntent.resolveActivity(getPackageManager())!= null){
+            //lo iniciamos con startActivityForResult esperando una respuesta que es la foto
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+
+            //Intent es la acción para enlazar una nueva Actividad, Servicio o BroadcastReceiver.
+            //Bundle es una coleccion de pares clave-valor.
+
+            //captura la imagen y lo devuelve como un bundle
+            Bundle extras = data.getExtras();
+            //lo que recibimos como foto lo convertimos en un bitmap, la clave qui es data.
+            //bitmap es una imagen, cualquier imagen digital es en realidad un mapa de bit o bitmap.
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //Mostramos la imagen en un imageView
+            imagen.setImageBitmap(imageBitmap);
+        }
     }
 
     public class Localizacion implements LocationListener{
@@ -64,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             longitud = location.getLongitude();
             latitud = location.getLatitude();
-
-            tvLatitud.setText(String.valueOf(latitud));
-            tvLongitud.setText(String.valueOf(longitud));
 
 
         }
@@ -123,11 +161,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        tvLatitud.setVisibility(View.VISIBLE);
-        tvLongitud.setVisibility(View.VISIBLE);
-        longituda.setVisibility(View.VISIBLE);
-        latituda.setVisibility(View.VISIBLE);
     }
-
-
 }

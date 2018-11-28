@@ -13,27 +13,6 @@
         tools:layout_editor_absoluteY="0dp">
 
         <TextView
-            android:id="@+id/textView5"
-            android:layout_width="131dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="78dp"
-            android:textSize="24sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="132dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="119dp"
-            android:text="Latitud:"
-            android:textSize="24sp"
-            android:visibility="invisible" />
-
-        <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,9 +26,9 @@
             android:id="@+id/editText"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="66dp"
+            android:layout_marginBottom="191dp"
             android:ems="10"
             android:hint="Nombre Producto"
             android:inputType="textPersonName" />
@@ -58,9 +37,9 @@
             android:id="@+id/editText2"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="136dp"
+            android:layout_marginBottom="137dp"
             android:ems="10"
             android:hint="Descripción"
             android:inputType="textPersonName" />
@@ -69,9 +48,9 @@
             android:id="@+id/editText3"
             android:layout_width="257dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="194dp"
+            android:layout_marginBottom="83dp"
             android:ems="10"
             android:hint="Precio"
             android:inputType="number" />
@@ -82,30 +61,27 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/colorPrimary"
             android:onClick="insertar"
             android:text="Registrar" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="136dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="115dp"
+            android:layout_height="118dp"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="159dp"
-            android:textSize="24sp"
-            android:visibility="invisible" />
+            android:layout_marginTop="72dp" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="132dp"
+        <Button
+            android:id="@+id/btnCaptura"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="200dp"
-            android:text="Longitud:"
-            android:textSize="24sp"
-            android:visibility="invisible" />
+            android:layout_marginTop="204dp"
+            android:text="Adj. Imagen" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
