@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private double longitud, latitud;
     private ImageView imagen;
     private Button btnCaptura;
+    private byte blob;
+    private ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream(1024);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) localizacion);
     }
 
+
     public void LLamarIntent()
     {
         //Nos lleva a un intent para tomar la fotografia
@@ -81,10 +86,16 @@ public class MainActivity extends AppCompatActivity {
             //Bundle es una coleccion de pares clave-valor.
 
             //captura la imagen y lo devuelve como un bundle
-            Bundle extras = data.getExtras();
+            Bundle extras =  null;
+            extras = data.getExtras();
             //lo que recibimos como foto lo convertimos en un bitmap, la clave qui es data.
             //bitmap es una imagen, cualquier imagen digital es en realidad un mapa de bit o bitmap.
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = null;
+            imageBitmap = (Bitmap) extras.get("data");
+
+
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, bytearrayoutputstream);
+
             //Mostramos la imagen en un imageView
             imagen.setImageBitmap(imageBitmap);
         }
@@ -126,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertar(View view){
+        byte [] blob = null;
         if(nombreProducto.getText().toString().trim().equalsIgnoreCase("")){
             nombreProducto.setError("Debe ingresar un nombre");
         } else if (descripcion.getText().toString().trim().equalsIgnoreCase("")){
@@ -140,17 +152,22 @@ public class MainActivity extends AppCompatActivity {
             nombre = nombreProducto.getText().toString();
             descri = descripcion.getText().toString();
             preci = Integer.parseInt(precio.getText().toString());
+            blob = bytearrayoutputstream.toByteArray();
+
+            Producto producto = new Producto(preci, longitud, latitud, blob, nombre, descri);
 
             dbHelper baseHelper = new dbHelper(this, "bd_projectoAndroid", null, 1);
             SQLiteDatabase db = baseHelper.getWritableDatabase();
 
             if(db != null){
                 ContentValues objectDV = new ContentValues();
-                objectDV.put("nombre", nombre);
-                objectDV.put("descripcion", descri);
-                objectDV.put("precio", preci);
-                objectDV.put("longituds", longitud);
-                objectDV.put("latituds", latitud);
+                objectDV.put("nombre", producto.getNombre());
+                objectDV.put("descripcion", producto.getDescripcion());
+                objectDV.put("precio", producto.getPrecio());
+                objectDV.put("longituds", producto.getLongitud());
+                objectDV.put("latituds", producto.getLatitud());
+                objectDV.put("imagen", producto.getBlob());
+
 
                 long nfilas = db.insert("tbl_productos", null, objectDV);
 
